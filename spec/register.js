@@ -21,7 +21,7 @@
 
             test_utils.openControlBox();
             var cbview = _converse.chatboxviews.get('controlbox');
-            expect(cbview.$('a.register-account').length).toBe(0);
+            expect($(cbview.el.querySelector('a.register-account')).length).toBe(0);
             done();
             });
         }));
@@ -39,7 +39,7 @@
             .then(function () {
             var cbview = _converse.chatboxviews.get('controlbox');
             test_utils.openControlBox();
-            var $panels = cbview.$('.controlbox-panes');
+            var $panels = $(cbview.el.querySelector('.controlbox-panes'));
             var $login = $panels.children().first();
             var $registration = $panels.children().last();
 
@@ -78,7 +78,7 @@
             cbview.el.querySelector('.toggle-register-login').click();
 
             // Check the form layout
-            var $form = cbview.$('#converse-register');
+            var $form = $(cbview.el.querySelector('#converse-register'));
             expect($form.find('input').length).toEqual(2);
             expect($form.find('input').first().attr('name')).toEqual('domain');
             expect($form.find('input').last().attr('type')).toEqual('submit');
@@ -108,7 +108,7 @@
             .then(function () {
 
             var cbview = _converse.chatboxviews.get('controlbox');
-            cbview.$('#controlbox-tabs').find('li').last().find('a').click(); // Click the Register tab
+            $(cbview.el.querySelector('#controlbox-tabs')).find('li').last().find('a').click(); // Click the Register tab
             var registerview = _converse.chatboxviews.get('controlbox').registerpanel;
             spyOn(registerview, 'onProviderChosen').and.callThrough();
             spyOn(registerview, 'getRegistrationFields').and.callThrough();
@@ -119,8 +119,8 @@
 
             expect(registerview._registering).toBeFalsy();
             expect(_converse.connection.connected).toBeFalsy();
-            registerview.$('input[name=domain]').val('conversejs.org');
-            registerview.$('input[type=submit]').click();
+            $(registerview.el.querySelector('input[name=domain]')).val('conversejs.org');
+            $(registerview.el.querySelector('input[type=submit]')).click();
             expect(registerview.onProviderChosen).toHaveBeenCalled();
             expect(registerview._registering).toBeTruthy();
             expect(_converse.connection.connect).toHaveBeenCalled();
@@ -147,9 +147,9 @@
             _converse.connection._dataRecv(test_utils.createRequest(stanza));
             expect(registerview.onRegistrationFields).toHaveBeenCalled();
             expect(registerview.renderRegistrationForm).toHaveBeenCalled();
-            expect(registerview.$('input').length).toBe(5);
-            expect(registerview.$('input[type=submit]').length).toBe(1);
-            expect(registerview.$('input[type=button]').length).toBe(1);
+            expect($(registerview.el.querySelector('input')).length).toBe(5);
+            expect($(registerview.el.querySelector('input[type=submit]')).length).toBe(1);
+            expect($(registerview.el.querySelector('input[type=button]')).length).toBe(1);
             done();
             });
         }));
@@ -167,7 +167,7 @@
             .then(function () {
 
             var cbview = _converse.chatboxviews.get('controlbox');
-            cbview.$('#controlbox-tabs').find('li').last().find('a').click(); // Click the Register tab
+            $(cbview.el.querySelector('#controlbox-tabs')).find('li').last().find('a').click(); // Click the Register tab
             var registerview = cbview.registerpanel;
             spyOn(registerview, 'onProviderChosen').and.callThrough();
             spyOn(registerview, 'getRegistrationFields').and.callThrough();
@@ -176,8 +176,8 @@
             registerview.delegateEvents();  // We need to rebind all events otherwise our spy won't be called
             spyOn(_converse.connection, 'connect').and.callThrough();
 
-            registerview.$('input[name=domain]').val('conversejs.org');
-            registerview.$('input[type=submit]').click();
+            $(registerview.el.querySelector('input[name=domain]')).val('conversejs.org');
+            $(registerview.el.querySelector('input[type=submit]')).click();
 
             var stanza = new Strophe.Builder("stream:features", {
                         'xmlns:stream': "http://etherx.jabber.org/streams",
@@ -198,13 +198,13 @@
             _converse.connection._dataRecv(test_utils.createRequest(stanza));
             expect(registerview.form_type).toBe('legacy');
 
-            registerview.$('input[name=username]').val('testusername');
-            registerview.$('input[name=password]').val('testpassword');
-            registerview.$('input[name=email]').val('test@email.local');
+            $(registerview.el.querySelector('input[name=username]')).val('testusername');
+            $(registerview.el.querySelector('input[name=password]')).val('testpassword');
+            $(registerview.el.querySelector('input[name=email]')).val('test@email.local');
 
             spyOn(_converse.connection, 'send');
 
-            registerview.$('input[type=submit]').click();
+            $(registerview.el.querySelector('input[type=submit]')).click();
 
             expect(_converse.connection.send).toHaveBeenCalled();
             var $stanza = $(_converse.connection.send.calls.argsFor(0)[0].tree());
@@ -227,7 +227,7 @@
             .then(function () {
 
             var cbview = _converse.chatboxviews.get('controlbox');
-            cbview.$('#controlbox-tabs').find('li').last().find('a').click(); // Click the Register tab
+            $(cbview.el.querySelector('#controlbox-tabs')).find('li').last().find('a').click(); // Click the Register tab
             var registerview = _converse.chatboxviews.get('controlbox').registerpanel;
             spyOn(registerview, 'onProviderChosen').and.callThrough();
             spyOn(registerview, 'getRegistrationFields').and.callThrough();
@@ -236,8 +236,8 @@
             registerview.delegateEvents();  // We need to rebind all events otherwise our spy won't be called
             spyOn(_converse.connection, 'connect').and.callThrough();
 
-            registerview.$('input[name=domain]').val('conversejs.org');
-            registerview.$('input[type=submit]').click();
+            $(registerview.el.querySelector('input[name=domain]')).val('conversejs.org');
+            $(registerview.el.querySelector('input[type=submit]')).click();
 
             var stanza = new Strophe.Builder("stream:features", {
                         'xmlns:stream': "http://etherx.jabber.org/streams",
@@ -260,13 +260,13 @@
             _converse.connection._dataRecv(test_utils.createRequest(stanza));
             expect(registerview.form_type).toBe('xform');
 
-            registerview.$('input[name=username]').val('testusername');
-            registerview.$('input[name=password]').val('testpassword');
-            registerview.$('input[name=email]').val('test@email.local');
+            $(registerview.el.querySelector('input[name=username]')).val('testusername');
+            $(registerview.el.querySelector('input[name=password]')).val('testpassword');
+            $(registerview.el.querySelector('input[name=email]')).val('test@email.local');
 
             spyOn(_converse.connection, 'send');
 
-            registerview.$('input[type=submit]').click();
+            $(registerview.el.querySelector('input[type=submit]')).click();
 
             expect(_converse.connection.send).toHaveBeenCalled();
             var $stanza = $(_converse.connection.send.calls.argsFor(0)[0].tree());
